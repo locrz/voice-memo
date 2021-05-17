@@ -13,6 +13,7 @@ export default class View {
   onRecordClick(command) {
     return () => {
       command();
+      this.toggleAudioElementVisible({ visible: false });
     };
   }
 
@@ -28,5 +29,19 @@ export default class View {
 
   configureStopRecordingButton(command) {
     this.btnStop.addEventListener("click", this.onStopRecordingClick(command));
+  }
+
+  toggleAudioElementVisible({ visible }) {
+    const classList = this.audioElement.classList;
+
+    visible ? classList.remove("hidden") : classList.add("hidden");
+  }
+
+  playAudio(url) {
+    const audio = this.audioElement;
+    audio.src = url;
+    audio.muted = false;
+    this.toggleAudioElementVisible({ visible: true });
+    audio.addEventListener("loadedmetadata", (_) => audio.play());
   }
 }
